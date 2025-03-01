@@ -90,7 +90,7 @@ model = dict(
     # model training and testing settings
     train_cfg=dict(),
     # test_cfg=dict(mode='whole'),
-    test_cfg = dict(mode='slide', crop_size=crop_size, stride=(384,384)),
+    test_cfg = dict(mode='slide', crop_size=crop_size, stride=(341,341)),
     )
 
 

@@ -16,7 +16,7 @@ from mmseg.evaluation import IoUMetric
 
 # dataset settings
 dataset_type = CropDataset
-data_root = 'data/crop'
+data_root = 'data/2024-高分创新大赛'
 crop_size = (512, 512)
 train_pipeline = [
     dict(type=LoadSingleRSImageFromFile),
