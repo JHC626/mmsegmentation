@@ -542,10 +542,12 @@ class LoadSingleRSImageFromFile(BaseTransform):
         if ds is None:
             raise Exception(f'Unable to open file: {filename}')
         img = np.einsum('ijk->jki', ds.ReadAsArray())
+        print(img.shape)
 
+        img = np.nan_to_num(img, nan=0)
         if self.to_float32:
             img = img.astype(np.float32)
-
+        img[img==-32768]=0    
         results['img'] = img
         results['img_shape'] = img.shape[:2]
         results['ori_shape'] = img.shape[:2]

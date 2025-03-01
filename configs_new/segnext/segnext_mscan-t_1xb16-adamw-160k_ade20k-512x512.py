@@ -15,7 +15,6 @@ data_preprocessor = dict(
     seg_pad_val=255,
     size=(512, 512),
     test_cfg=dict(size_divisor=32))
-
 model = dict(
     type='EncoderDecoder',
     data_preprocessor=data_preprocessor,
