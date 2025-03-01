@@ -1,5 +1,6 @@
 # SegNeXt
 
+# 现在是jhc/bisai 分支
 > [SegNeXt: Rethinking Convolutional Attention Design for Semantic Segmentation](https://arxiv.org/abs/2209.08575)
 
 ## Introduction
