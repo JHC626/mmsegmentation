@@ -4,7 +4,7 @@ from mmcv.transforms.processing import (RandomFlip, RandomResize, Resize,
                                         TestTimeAug)
 from mmengine.dataset.sampler import DefaultSampler, InfiniteSampler
 
-from mmseg.datasets.crop import CropDataset
+from mmseg.datasets.crop_gaofen import CropDataset_gaofen
 
 from mmseg.datasets.transforms.loading import LoadSingleRSImageFromFile
 
@@ -15,12 +15,12 @@ from mmseg.datasets.transforms.transforms import (PhotoMetricDistortion,
 from mmseg.evaluation import IoUMetric
 
 # dataset settings
-dataset_type = CropDataset
-data_root = 'data/2024-高分创新大赛/初复赛微调crop'
+dataset_type = CropDataset_gaofen
+data_root = 'data/2024-高分创新大赛'
 crop_size = (512, 512)
 train_pipeline = [
     dict(type=LoadSingleRSImageFromFile),
-    dict(type=LoadAnnotations),
+    dict(type=LoadAnnotations,reduce_zero_label=True),
     dict(
         type=RandomResize,
         scale=crop_size,
@@ -36,16 +36,16 @@ val_pipeline = [
     dict(type=Resize, scale=crop_size, keep_ratio=True),
     # add loading annotation after ``Resize`` because ground truth
     # does not need to do resize data transform
-    dict(type=LoadAnnotations),
+    dict(type=LoadAnnotations,reduce_zero_label=True),
     dict(type=PackSegInputs)
 ]
 
 test_pipeline = [
     dict(type=LoadSingleRSImageFromFile),
-    #dict(type=Resize, scale=crop_size, keep_ratio=True),
+    # dict(type=Resize, scale=crop_size, keep_ratio=True),
     # add loading annotation after ``Resize`` because ground truth
     # does not need to do resize data transform
-    #dict(type=LoadAnnotations, reduce_zero_label=False),
+    dict(type=LoadAnnotations, reduce_zero_label=True),
     dict(type=PackSegInputs)
 ]
 img_ratios = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]
@@ -65,7 +65,7 @@ tta_pipeline = [
 ]
 
 train_dataloader = dict(
-    batch_size=4,
+    batch_size=2,
     num_workers=8,
     persistent_workers=True,
     sampler=dict(type=InfiniteSampler, shuffle=True),
@@ -73,7 +73,8 @@ train_dataloader = dict(
         type=dataset_type,
         data_root=data_root,
         data_prefix=dict(
-            img_path='img_dir/train', seg_map_path='ann_dir/train'),
+            img_path='Annotation_index_png_18类_512x512/img_dir/train/GF2-5B-18class', 
+            seg_map_path='Annotation_index_png_18类_512x512/ann_dir/train/GF2-5B-18class'),
         pipeline=train_pipeline))
 
 val_dataloader = dict(
@@ -84,7 +85,8 @@ val_dataloader = dict(
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
-        data_prefix=dict(img_path='img_dir/train', seg_map_path='ann_dir/train'),
+        data_prefix=dict(img_path='Annotation_index_png_18类_512x512/img_dir/val', 
+                         seg_map_path='Annotation_index_png_18类_512x512/ann_dir/val'),
         pipeline=val_pipeline))
 
 test_dataloader = dict(
@@ -94,8 +96,9 @@ test_dataloader = dict(
     sampler=dict(type=DefaultSampler, shuffle=False),
     dataset=dict(
         type=dataset_type,
-        # data_root=None,
-        data_prefix=dict(img_path='/data/JHC/Datasets/2024-高分创新大赛/复赛测试数据集/总体'),
+        data_root=data_root,
+        data_prefix=dict(img_path='Annotation_index_png_18类_512x512/img_dir/val', 
+                         seg_map_path='Annotation_index_png_18类_512x512/ann_dir/val'),
         pipeline=test_pipeline))
 
 val_evaluator = dict(
@@ -103,5 +106,5 @@ val_evaluator = dict(
 test_evaluator = dict(
     type=IoUMetric,
     iou_metrics=['mIoU', 'mFscore'],
-    #format_only=True,
+    # format_only=True,
     keep_results=True)

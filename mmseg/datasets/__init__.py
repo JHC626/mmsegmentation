@@ -42,7 +42,7 @@ from .transforms import (CLAHE, AdjustGamma, Albu, BioMedical3DPad,
 from .voc import PascalVOCDataset
 
 from .crop import CropDataset
-
+from .crop_gaofen import CropDataset_gaofen
 # yapf: enable
 __all__ = [
     'BaseSegDataset', 'BioMedical3DRandomCrop', 'BioMedical3DRandomFlip',
@@ -63,5 +63,5 @@ __all__ = [
     'MapillaryDataset_v2', 'Albu', 'LEVIRCDDataset',
     'LoadMultipleRSImageFromFile', 'LoadSingleRSImageFromFile',
     'ConcatCDInput', 'BaseCDDataset', 'DSDLSegDataset', 'BDD100KDataset',
-    'NYUDataset', 'HSIDrive20Dataset','CropDataset'
+    'NYUDataset', 'HSIDrive20Dataset','CropDataset','CropDataset_gaofen'
 ]

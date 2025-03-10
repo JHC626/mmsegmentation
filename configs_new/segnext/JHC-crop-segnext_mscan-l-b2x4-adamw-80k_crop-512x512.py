@@ -40,13 +40,14 @@ data_preprocessor = dict(
     type=SegDataPreProcessor,
     mean=[995.26933225455, 1452.7270343669, 1638.4348408118, 3150.9832206793],
     std=[317.36181350835, 406.4103774175, 546.77043273976, 501.33003719076],
+  
     # bgr_to_rgb=True,
     pad_val=0,
     seg_pad_val=255,
     size=crop_size,
     test_cfg=dict(size_divisor=32))
 
-checkpoint_file = 'checkpoints/segnext/base/segnext-base-4chan.pth'  # noqa
+checkpoint_file = 'checkpoints/segnext/large/segnext-large-4chan.pth'  # noqa
 # checkpoint_file = 'checkpoints/segnext/segnext-B.pth'
 model = dict(
     type=EncoderDecoder,
@@ -58,19 +59,19 @@ model = dict(
         embed_dims=[64, 128, 320, 512],
         mlp_ratios=[8, 8, 4, 4],
         drop_rate=0.0,
-        depths=[3, 3, 12, 3],
+        depths=[3, 5, 27, 3],
         attention_kernel_sizes=[5, [1, 7], [1, 11], [1, 21]],
         attention_kernel_paddings=[2, [0, 3], [0, 5], [0, 10]],
         act_cfg=dict(type=GELU),
         # init_cfg=dict(type='Pretrained', checkpoint=checkpoint_file),
-        drop_path_rate=0.1,
+        drop_path_rate=0.3,
         norm_cfg=norm_cfg),
     decode_head=dict(
         type=LightHamHead,
         in_channels=[128, 320, 512],
         in_index=[1, 2, 3],
-        channels=512,
-        ham_channels=512,
+        channels=1024,
+        ham_channels=1024,
         dropout_ratio=0.1,
         num_classes=num_classes,
         norm_cfg=ham_norm_cfg,
@@ -131,6 +132,6 @@ val_evaluator = dict(
 test_evaluator = dict(
     type=IoUMetric,
     iou_metrics=['mIoU', 'mFscore'],
-    format_only=True,
+    format_only=True,  #???????????????????????????
     keep_results=True)
 #load_from='/data/JHC/openmmlab/mmsegmentation/checkpoints/segnext/训练好的5V/iter_80000.pth'

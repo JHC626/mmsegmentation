@@ -1,0 +1,17 @@
+
+
+pixel.decoder.xxxx
+
+attentions.0.  --> self_attn.
+ffns.0. --> ffn.   
+
+
+transformer_decoder.xxxx
+
+attentions.0.  --> self_attn.   
+attentions.1. -->  cross_attn.  
+ffns.0.  --> ffn.   
+
+
+
+
